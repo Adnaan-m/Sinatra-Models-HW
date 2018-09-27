@@ -11,50 +11,11 @@ class App < Sinatra::Base
   set :views, Proc.new {File.join(root,"views")}
 
   prng = Random.new
-  # Create Set of Information in an Array /// Will be Database Later
-  $motorbikes = [
-    { #TRY AND SORT ID OUT to prevent DUPLICATION WHEN INSERTING/DELETING
-      :id =>   1,
-      :make => 'Kawasaki',
-      :year => 2017,
-      :model => 'H2R'
-    },
-    {
-      :id => 2,
-      :make => 'Kawasaki',
-      :year => 2018,
-      :model => 'Ninja ZX10R'
-    },
-    {
-      :id => 3,
-      :make => 'Yamaha',
-      :year => 2018,
-      :model => 'R1'
-    },
-    {
-      :id => 4,
-      :make => 'KTM',
-      :year => 2015,
-      :model => 'RC8'
-    },
-    {
-      :id => 5,
-      :make => 'BMW',
-      :year => 2015,
-      :model => 'S1000RR'
-    },
-    {
-      :id => 6,
-      :make => 'Ducati',
-      :year => 2010,
-      :model => '1198S'
-    }
-  ]
 
   # Index
   get '/motorbikes' do
     @title = 'Home'
-    @motorbikes = $motorbikes
+    @motorbikes = Motorbike.all
     erb :'motorbikes/index'
   end
 
@@ -66,7 +27,8 @@ class App < Sinatra::Base
   # Show
   get '/motorbikes/:id' do
     id = params[:id].to_i
-    @motorbike = $motorbikes[id - 1]
+    @motorbikes = Motorbike.find id
+
     erb :'motorbikes/shows'
   end
 
@@ -74,48 +36,47 @@ class App < Sinatra::Base
   post '/motorbikes' do
 
     # initiate new ID
-    id = $motorbikes.length + 1
+    motorbike = Motorbike.new
 
-    newBike = {
-      :id => id,
-      :make => params[:make],
-      :model => params[:model],
-      :year => params[:year]
-    }
+    motorbike.id = params[:id]
+    motorbike.make = params[:make]
+    motorbike.model = params[:model]
+    motorbike.year = params[:year]
+
     # push values of newBike into motorbikes "database"
-    $motorbikes.push newBike
+    motorbike.save
 
     redirect '/motorbikes'
   end
 
-#  Update
+  #  Update
   put '/motorbikes/:id' do
-    id = params[:id].to_i - 1
+    id = params[:id].to_i
 
-    bike = $motorbikes[id]
+    bike = Motorbike.find id
 
-    bike[:make] = params[:make]
-    bike[:model] = params[:model]
-    bike[:year] = params[:year]
+    bike.make = params[:make]
+    bike.model = params[:model]
+    bike.year = params[:year]
 
-    $motorbikes[id] = bike
+    bike.save
 
     redirect '/motorbikes'
   end
 
-# Edit
+  # Edit
   get '/motorbikes/:id/edit' do
     id = params[:id].to_i
-    @motorbikes = $motorbikes[id- 1]
+    @motorbikes = Motorbike.find id
     erb :'motorbikes/edit'
   end
 
-#  Delete
-    delete '/motorbikes/:id' do
-      id = params[:id].to_i
-      $motorbikes.delete_at id
-      redirect '/motorbikes'
-    end
+  #  Delete
+  delete '/motorbikes/:id' do
+    id = params[:id].to_i
+    Motorbike.destroy id
+    redirect '/motorbikes'
+  end
 
   # Class End
 end
