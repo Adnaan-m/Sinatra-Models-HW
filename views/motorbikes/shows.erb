@@ -1,0 +1,11 @@
+<a href="/motorbikes">Go To Home Page</a>
+<a style="margin-left:11px;" href="/motorbikes/<%=@motorbike[:id]%>/edit">Alter</a>
+
+<h2>Make <%= @motorbike[:make] %></h2>
+<h3>Model <%= @motorbike[:model] %></h3>
+<h3>Year Built <%= @motorbike[:year] %></h3>
+
+<form class="" action="index.html" method="POST">
+  <input type="hidden" name="_method" value="DELETE">
+  <input type="submit" value="Delete" style="border:none;color:red;">
+</form>

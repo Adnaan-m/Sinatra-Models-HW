@@ -1,0 +1,9 @@
+<!--The index page sourced from the controller through ERB function-->
+<h1>Motorbikes</h1>
+
+<% @motorbikes.each do |bike|%>
+<h4>Make: <%= bike[:make] %></h4>
+<h5>Model: <%= bike[:model] %></h5>
+<h5>Reg: <%= bike[:year] %></h5>
+<a href="/motorbikes/<%= bike[:id] %>">Go To Motorbike Page</a>
+<% end %>

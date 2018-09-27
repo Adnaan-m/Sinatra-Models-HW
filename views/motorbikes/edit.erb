@@ -1,0 +1,25 @@
+<!--Edit motorbike data field-->
+<form action='/motorbikes/<%= @motorbikes[:id] %>' method="POST">
+<form class="form-inline" action='/motorbikes' method="POST">
+  <div class="form-group">
+    <label for="exampleInputName2">Make</label>
+    <input type="text" class="form-control" placeholder="Make" name="make"
+    value="<%= @motorbikes[:make] %>">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputName2">Model</label>
+    <input type="text" class="form-control" placeholder="Model" name="model"
+    value="<%= @motorbikes[:model] %>">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputName2">Year</label>
+    <input type="text" class="form-control" placeholder="Year" name="year"
+    value="<%= @motorbikes[:year] %>">
+  </div>
+
+  <button type="submit" class="btn btn-default" value="PUT">Submit</button>
+
+  <% if (@motorbikes[:id] != '') %>
+<input type="hidden" name="_method" value="PUT">
+<% end %>
+</form>
